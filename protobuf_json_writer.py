@@ -29,8 +29,8 @@ _jsWriter_type_bool.__name__='bool'
 _jsWriter_types = {
 	_FieldDescriptor.TYPE_DOUBLE: float,
 	_FieldDescriptor.TYPE_FLOAT: float,
-	_FieldDescriptor.TYPE_INT64: long,
-	_FieldDescriptor.TYPE_UINT64: long,
+	_FieldDescriptor.TYPE_INT64: int,
+	_FieldDescriptor.TYPE_UINT64: int,
 	_FieldDescriptor.TYPE_INT32: int,
 	_FieldDescriptor.TYPE_FIXED64: float,
 	_FieldDescriptor.TYPE_FIXED32: float,
@@ -43,10 +43,10 @@ _jsWriter_types = {
 	_FieldDescriptor.TYPE_SFIXED32: float,
 	_FieldDescriptor.TYPE_SFIXED64: float,
 	_FieldDescriptor.TYPE_SINT32: int,
-	_FieldDescriptor.TYPE_SINT64: long,
+	_FieldDescriptor.TYPE_SINT64: int,
 }
 
-from StringIO import StringIO
+from io import StringIO
 
 class jsWriter(StringIO):
 	_level = 0
@@ -64,7 +64,7 @@ class jsWriter(StringIO):
 			s+='\t'
 		return s
 	def _indent_value(self, value):
-		if type(value) in (str, unicode,):
+		if type(value) in (str,):
 			value=value.replace('\n','\n'+self.print_indent)
 			return value.rstrip()
 		return value
@@ -105,10 +105,10 @@ def _msg2json(pb_msg):
 				value = _jsWriter_types[field.type]()
 			jso.print_field(ftype, name, value, field.label == _FieldDescriptor.LABEL_REPEATED)
 		jso.end_msg()
-	except Exception, e:
+	except Exception as e:
 		jso.seek(0)
 		# e.args = (jso.read(),)
-		print jso.read()
+		print(jso.read())
 		raise
 	jso.seek(0)
 	return jso.read()

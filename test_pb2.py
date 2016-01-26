@@ -17,7 +17,7 @@ QUERY_FIELD_NUMBER = 100
 query = descriptor.FieldDescriptor(
   name='query', full_name='protobuf_json_test.query', index=0,
   number=100, type=9, cpp_type=9, label=1,
-  has_default_value=True, default_value=unicode("test ext", "utf-8"),
+  has_default_value=True, default_value="test ext",
   message_type=None, enum_type=None, containing_type=None,
   is_extension=True, extension_scope=None,
   options=None)
@@ -69,14 +69,14 @@ _TESTMESSAGE_NESTEDMSG = descriptor.Descriptor(
     descriptor.FieldDescriptor(
       name='title', full_name='protobuf_json_test.TestMessage.NestedMsg.title', index=1,
       number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='url', full_name='protobuf_json_test.TestMessage.NestedMsg.url', index=2,
       number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -110,7 +110,7 @@ _TESTMESSAGE = descriptor.Descriptor(
     descriptor.FieldDescriptor(
       name='query', full_name='protobuf_json_test.TestMessage.query', index=1,
       number=2, type=9, cpp_type=9, label=1,
-      has_default_value=True, default_value=unicode("test", "utf-8"),
+      has_default_value=True, default_value="test",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -184,18 +184,14 @@ _TESTMESSAGE.fields_by_name['nested_msg'].message_type = _TESTMESSAGE_NESTEDMSG
 _TESTMESSAGE.fields_by_name['nested_msgs'].message_type = _TESTMESSAGE_NESTEDMSG
 _TESTMESSAGE_TESTENUM.containing_type = _TESTMESSAGE;
 
-class TestMessage(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  
-  class NestedMsg(message.Message):
-    __metaclass__ = reflection.GeneratedProtocolMessageType
+class TestMessage(message.Message, metaclass=reflection.GeneratedProtocolMessageType):
+  class NestedMsg(message.Message, metaclass=reflection.GeneratedProtocolMessageType):
     DESCRIPTOR = _TESTMESSAGE_NESTEDMSG
-    
+
     # @@protoc_insertion_point(class_scope:protobuf_json_test.TestMessage.NestedMsg)
   DESCRIPTOR = _TESTMESSAGE
-  
+
   # @@protoc_insertion_point(class_scope:protobuf_json_test.TestMessage)
 
 TestMessage.RegisterExtension(query)
-TestMessage.RegisterExtension(long)
 # @@protoc_insertion_point(module_scope)

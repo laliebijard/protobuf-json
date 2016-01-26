@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 import os, sys
 # set import path to app root
@@ -13,4 +13,4 @@ from pprint import pprint
 import test_pb2 as pb_test
 
 # print protobuf_json_writer._msg2json(pb_test.TestMessage.DESCRIPTOR)
-print protobuf_json_writer.proto2json(pb_test)
+print((protobuf_json_writer.proto2json(pb_test)))

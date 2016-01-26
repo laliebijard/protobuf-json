@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import os, sys, json
 from pprint import pprint
@@ -27,17 +27,17 @@ msgs.url="http://localhost/"
 pb.rep_int.append(1)
 pb.rep_int.append(2)
 
-pb.bs.append("\x00\x01\x02\x03\x04");
-pb.bs.append("\x05\x06\x07\x08\x09");
+pb.bs.append(b"\x00\x01\x02\x03\x04");
+pb.bs.append(b"\x05\x06\x07\x08\x09");
 
 # convert it to JSON and back
 pprint(pb.SerializeToString())
 json_obj=protobuf_json.pb2json(pb)
-print json_obj
+print(json_obj)
 pb2=protobuf_json.json2pb(pb_test.TestMessage(), json_obj)
 pprint(pb2.SerializeToString())
 
 if pb == pb2:
-	print "Test passed."
+	print("Test passed.")
 else:
-	print "Test FAILED!"
+	print("Test FAILED!")
