@@ -47,6 +47,21 @@ from google.protobuf.descriptor import FieldDescriptor as FD
 
 class ParseError(Exception): pass
 
+class EnumHandler(object):
+	def __init__(self, field, string_out=False):
+		self.field = field
+		self.string_out = string_out
+	def __call__(self, value):
+		converted = self._convert(value)
+		if self.string_out:
+			converted = self.field.enum_type.values_by_number[converted].name
+		return converted
+	def _convert(self, value):
+		try:
+			return int(value)
+		except ValueError:
+			return self.field.enum_type.values_by_name[str(value)].number
+
 
 def json2pb(pb, js):
 	''' convert JSON string to google.protobuf.descriptor instance '''
@@ -55,6 +70,8 @@ def json2pb(pb, js):
 			continue
 		if field.type == FD.TYPE_MESSAGE:
 			pass
+		elif field.type == FD.TYPE_ENUM:
+			ftype = EnumHandler(field)
 		elif field.type in _js2ftype:
 			ftype = _js2ftype[field.type]
 		else:
@@ -76,7 +93,7 @@ def json2pb(pb, js):
 
 
 
-def pb2json(pb):
+def pb2json(pb, enum_string=True):
 	''' convert google.protobuf.descriptor instance to JSON string '''
 	js = {}
 	# fields = pb.DESCRIPTOR.fields #all fields
@@ -84,6 +101,8 @@ def pb2json(pb):
 	for field,value in fields:
 		if field.type == FD.TYPE_MESSAGE:
 			ftype = pb2json
+		elif field.type == FD.TYPE_ENUM:
+			ftype = EnumHandler(field, enum_string)
 		elif field.type in _ftype2js:
 			ftype = _ftype2js[field.type]
 		else:
@@ -111,7 +130,7 @@ _ftype2js = {
 	#FD.TYPE_MESSAGE: pb2json,		#handled specially
 	FD.TYPE_BYTES: bytes,
 	FD.TYPE_UINT32: int,
-	FD.TYPE_ENUM: int,
+	#FD.TYPE_ENUM: int,		#handled specially
 	FD.TYPE_SFIXED32: float,
 	FD.TYPE_SFIXED64: float,
 	FD.TYPE_SINT32: int,
@@ -131,10 +150,9 @@ _js2ftype = {
 	# FD.TYPE_MESSAGE: json2pb,	#handled specially
 	FD.TYPE_BYTES: bytes,
 	FD.TYPE_UINT32: int,
-	FD.TYPE_ENUM: int,
+	#FD.TYPE_ENUM: int,		#handled specially
 	FD.TYPE_SFIXED32: float,
 	FD.TYPE_SFIXED64: float,
 	FD.TYPE_SINT32: int,
 	FD.TYPE_SINT64: int,
 }
-
