@@ -55,7 +55,7 @@ class jsWriter(StringIO):
 		self._level+=1
 	def end_msg(self):
 		self._level-=1
-		self.seek(self.pos-2)
+		self.seek(self.tell() - 2)
 		self.write(self.print_indent+'\n}')
 	@property
 	def print_indent(self):

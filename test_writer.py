@@ -12,5 +12,5 @@ from pprint import pprint
 
 import test_pb2 as pb_test
 
-# print protobuf_json_writer._msg2json(pb_test.TestMessage.DESCRIPTOR)
-print((protobuf_json_writer.proto2json(pb_test)))
+# print(protobuf_json_writer._msg2json(pb_test.TestMessage.DESCRIPTOR))
+print(protobuf_json_writer.proto2json(pb_test))
