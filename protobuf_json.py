@@ -98,9 +98,10 @@ def pb2json(pb, enum_string=True):
 	js = {}
 	# fields = pb.DESCRIPTOR.fields #all fields
 	fields = pb.ListFields()	#only filled (including extensions)
+	pb2json_ftype = lambda x: pb2json(x, enum_string)
 	for field,value in fields:
 		if field.type == FD.TYPE_MESSAGE:
-			ftype = pb2json
+			ftype = pb2json_ftype
 		elif field.type == FD.TYPE_ENUM:
 			ftype = EnumHandler(field, enum_string)
 		elif field.type in _ftype2js:
